@@ -12,7 +12,6 @@ const Mood: NextPage = () => {
   const [wallet, setWallet] = useState<PrivateKeyAccount | null>(null);
   const [selectedMood, setSelectedMood] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const { data: deployedContractData } = useDeployedContractInfo("DataContract");
 
   const moods = [
@@ -34,6 +33,7 @@ const Mood: NextPage = () => {
       setWallet(privateKeyToAccount(storedWallet));
     }
   }, []);
+
   const handleMoodSelect = async (mood: string) => {
     setSelectedMood(mood);
     setIsSubmitting(true);

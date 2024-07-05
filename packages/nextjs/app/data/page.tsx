@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import TransactionModal from "./component/TransactionModal";
 import type { NextPage } from "next";
 import { useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
 
 const Data: NextPage = () => {
   const [formattedEntries, setFormattedEntries] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     data: events,
@@ -22,7 +24,11 @@ const Data: NextPage = () => {
   useEffect(() => {
     console.log("=====================");
     console.log(events, isLoading, error);
+    setIsModalOpen(true);
+
     if (events) {
+      setIsModalOpen(true);
+
       const formatted = events.map(event => {
         let parsedData;
         try {
@@ -62,6 +68,8 @@ const Data: NextPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-500 flex flex-col items-center justify-center p-4">
+      <TransactionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
       <div className="bg-white rounded-lg shadow-2xl p-8 max-w-2xl w-full">
         <h1 className="text-4xl font-bold text-center mb-6 text-purple-600">Mood Board</h1>
         <p className="text-center mb-8 text-gray-700">Check out everyone&apos;s on-chain moods!</p>
