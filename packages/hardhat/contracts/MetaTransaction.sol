@@ -69,7 +69,7 @@ contract MetaTransaction {
 		nonces[userAddress] += 1;
 
 		(bool success, bytes memory returnData) = address(this).call(
-			abi.encodePacked(functionSignature, userAddress)
+			functionSignature
 		);
 		require(success, "Function call not successful");
 
