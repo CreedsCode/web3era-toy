@@ -48,9 +48,6 @@ contract MetaTransaction {
 		bytes functionSignature;
 	}
 
-	event Log(string message, bytes data);
-
-	event Log(string message, address userAddress);
 	function executeMetaTransaction(
 		address userAddress,
 		bytes memory functionSignature,
@@ -71,11 +68,8 @@ contract MetaTransaction {
 
 		nonces[userAddress] += 1;
 
-		emit Log("Function Signature:", functionSignature);
-		emit Log("User Address:", userAddress);
-
 		(bool success, bytes memory returnData) = address(this).call(
-			functionSignature
+			abi.encodePacked(functionSignature, userAddress)
 		);
 		require(success, "Function call not successful");
 
