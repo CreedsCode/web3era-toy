@@ -3,15 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
+import { useTheme } from "next-themes";
 import { PrivateKeyAccount, generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 
 const Login: NextPage = () => {
+  const { setTheme } = useTheme();
+
   const [username, setUsername] = useState("");
   const [wallet, setWallet] = useState<PrivateKeyAccount | null>(null);
   const [privateKey, setPrivateKey] = useState();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    setTheme("light");
     const _privateKey = generatePrivateKey();
     setPrivateKey(_privateKey);
     const account = privateKeyToAccount(_privateKey);
