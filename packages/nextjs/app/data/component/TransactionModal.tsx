@@ -18,13 +18,13 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ isOpen, onClose }) 
         </p>
         <p className="mb-6">
           Interested in learning more about meta transactions and the technology behind this app? Check out the{" "}
-          <a href="https://github.com/CreedsCode/web3era-toy" passHref>
+          <a href="https://github.com/CreedsCode/web3era-toy">
             <a className="text-purple-600 hover:underline" target="_blank" rel="noopener noreferrer">
               GitHub repository
             </a>
           </a>{" "}
           for a detailed guide and the source code. Stay up to date by following me on{" "}
-          <a href="https://x.com/spanish_vanish" passHref>
+          <a href="https://x.com/spanish_vanish">
             <a className="text-purple-600 hover:underline" target="_blank" rel="noopener noreferrer">
               Twitter
             </a>
