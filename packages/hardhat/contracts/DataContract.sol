@@ -18,9 +18,17 @@ contract DataContract is MetaTransaction("DataContract", "1", block.chainid) {
 	mapping(address => bool) public whitelist;
 	mapping(address => uint256[]) public userEntries;
 
+	event DataStored(
+		uint256 indexed id,
+		address indexed user,
+		string location,
+		uint256 timestamp
+	);
+
 	constructor(address _owner) {
 		owner = _owner;
 		nextId = 1;
+		updateWhitelist(owner, true);
 	}
 
 	modifier onlyOwner() {
@@ -53,6 +61,9 @@ contract DataContract is MetaTransaction("DataContract", "1", block.chainid) {
 
 		dataEntries.push(newEntry);
 		userEntries[user].push(nextId);
+
+		emit DataStored(nextId, user, location, block.timestamp);
+
 		nextId++;
 	}
 

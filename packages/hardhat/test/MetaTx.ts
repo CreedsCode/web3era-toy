@@ -77,6 +77,7 @@ describe("DataContract MetaTransaction", function () {
       .withArgs(userWallet.address, relayer.address, functionSignature);
 
     const dataEntries = await dataContract.getDataEntries();
+    console.log(dataEntries, "created data entry");
     expect(dataEntries.length).to.equal(1);
     expect(dataEntries[0].user).to.equal(userWallet.address);
     expect(dataEntries[0].location).to.equal("MetaTransaction Location");

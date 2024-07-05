@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "hardhat/console.sol";
 
 contract MetaTransaction {
 	using ECDSA for bytes32;
@@ -47,6 +48,9 @@ contract MetaTransaction {
 		bytes functionSignature;
 	}
 
+	event Log(string message, bytes data);
+
+	event Log(string message, address userAddress);
 	function executeMetaTransaction(
 		address userAddress,
 		bytes memory functionSignature,
@@ -67,8 +71,11 @@ contract MetaTransaction {
 
 		nonces[userAddress] += 1;
 
+		emit Log("Function Signature:", functionSignature);
+		emit Log("User Address:", userAddress);
+
 		(bool success, bytes memory returnData) = address(this).call(
-			abi.encodePacked(functionSignature, userAddress)
+			functionSignature
 		);
 		require(success, "Function call not successful");
 

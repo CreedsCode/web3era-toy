@@ -12,7 +12,10 @@ const deployDataContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  // Deploy the DataContract
+  // Get the current chain ID
+  // const chainId = hre.network.config.chainId || 31337; // Use 31337 as the default chain ID
+
+  // Deploy the DataContract with the MetaTransaction constructor arguments
   await deploy("DataContract", {
     from: deployer,
     args: [deployer], // Set the deployer as the owner
