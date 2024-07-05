@@ -21,6 +21,7 @@ const Login: NextPage = () => {
     const account = privateKeyToAccount(_privateKey);
 
     setWallet(account);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
