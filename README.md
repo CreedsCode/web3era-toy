@@ -49,8 +49,6 @@ So, there you have it, my friend! That's the technical magic happening behind th
 
 We've got some exciting plans for the future, like preemptive caching to make things even faster and integration with other cool web3 protocols. But for now, sit back, relax, and enjoy sharing your moods with the world!
 
-If you want to dive deeper into the technical details or contribute to the project, just check out the repository. We've got you covered with all the documentation and setup guides you need.
-
-Stay up to date by following me on Twitter.
+Stay up to date by following me on Twitter and feel free to leave a start on this repo!
 
 https://x.com/spanish_vanish
