@@ -43,6 +43,7 @@ const Data: NextPage = () => {
           user: event.args.user,
           data: parsedData,
           timestamp: new Date(Number(event.args.timestamp) * 1000).toLocaleString(),
+          transactionHash: event.transactionHash,
         };
       });
       setFormattedEntries(formatted);
@@ -94,7 +95,36 @@ const Data: NextPage = () => {
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-purple-600">{entry.data.username}</span>
-                  <span className="text-sm text-gray-500">{entry.timestamp}</span>
+                  <div>
+                    <span className="text-sm text-gray-500 mr-2">{entry.timestamp}</span>
+                    <a
+                      href={`https://sepolia.etherscan.io/tx/${entry.transactionHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-purple-600 hover:underline"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 inline"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
                 <div className="mt-2 flex items-center">
                   <span className="text-2xl mr-2">{getMoodEmoji(entry.data.mood)}</span>

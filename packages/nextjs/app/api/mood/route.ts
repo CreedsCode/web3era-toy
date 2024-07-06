@@ -11,6 +11,8 @@ const hexToNumber = (hex: string): number => parseInt(hex, 16);
 export async function POST(request: NextRequest) {
   const { metaTransaction, signature, chainId } = await request.json();
 
+  console.log("MetaTransaction: ", signature, chainId);
+
   try {
     const targetNetwork = scaffoldConfig.targetNetworks[0];
     const adminClient = adminClients[targetNetwork.id];
@@ -25,7 +27,6 @@ export async function POST(request: NextRequest) {
     };
 
     // Verify the signature
-    console.log("==================", chainId);
     const signerAddress = await recoverTypedDataAddress({
       domain: {
         name: "DataContract",
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
       signature: signature as Hex,
     });
 
-    console.log("Signature verified.");
+    console.log("Signature verified, its from: ", signerAddress);
 
     if (signerAddress.toLowerCase() !== metaTransaction.from.toLowerCase()) {
       throw new Error("Invalid signature");

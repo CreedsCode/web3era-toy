@@ -10,6 +10,8 @@ type WhitelistRequest = {
 export async function POST(request: Request) {
   const { publicKey } = (await request.json()) as WhitelistRequest;
 
+  console.log("Adding, ", publicKey, ": To Whitelist");
+
   try {
     // Assuming you want to use the first target network specified in the config
     const targetNetwork = scaffoldConfig.targetNetworks[0];

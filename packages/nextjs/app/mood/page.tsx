@@ -69,7 +69,7 @@ const Mood: NextPage = () => {
         domain: {
           name: "DataContract",
           version: "1",
-          chainId: BigInt(targetNetwork.id || 31337),
+          chainId: BigInt(11155111),
           verifyingContract: deployedContractData?.address as `0x${string}`,
         },
         types: {
