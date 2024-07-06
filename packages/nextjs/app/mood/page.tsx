@@ -81,7 +81,7 @@ const Mood: NextPage = () => {
       const signature = await wallet.signTypedData({
         domain: {
           name: "DataContract",
-          version: "1",
+          version: "2",
           chainId: BigInt(11155111),
           verifyingContract: deployedContractData?.address as `0x${string}`,
         },

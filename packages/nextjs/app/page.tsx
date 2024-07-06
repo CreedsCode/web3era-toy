@@ -81,6 +81,12 @@ const Login: NextPage = () => {
             />
           </div>
 
+          <p className="text-red-600 text-sm font-medium bg-red-100 border border-red-200 rounded-md p-3">
+            Warning: Do not use your email address or full name as your username. This information will be publicly
+            readable on the blockchain. Twitter handles, Discord usernames, or your first name are fine, but avoid using
+            any personally identifiable information.
+          </p>
+
           {isReady ? (
             <button
               onClick={handleLogin}

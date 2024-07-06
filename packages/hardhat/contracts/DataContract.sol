@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./MetaTransaction.sol";
 
-contract DataContract is MetaTransaction("DataContract", "1", block.chainid) {
+contract DataContract is MetaTransaction("DataContract", "2", block.chainid) {
 	struct DataEntry {
 		uint256 id;
 		address user;

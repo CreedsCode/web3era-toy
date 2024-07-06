@@ -31,7 +31,7 @@ describe("DataContract MetaTransaction", function () {
   it("Should store data via meta-transaction", async function () {
     const domain = {
       name: "DataContract",
-      version: "1",
+      version: "2",
       chainId: Number((await ethers.provider.getNetwork()).chainId),
       verifyingContract: await dataContract.getAddress(),
     };

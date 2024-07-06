@@ -539,7 +539,7 @@ const deployedContracts = {
   },
   11155111: {
     DataContract: {
-      address: "0xAfD1d25D8eee06f3aa9720ae2450DdBD48755035",
+      address: "0x121E4E07d13F7F64ae953667457b76BB0D450b26",
       abi: [
         {
           inputs: [

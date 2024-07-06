@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     const signerAddress = await recoverTypedDataAddress({
       domain: {
         name: "DataContract",
-        version: "1",
+        version: "2",
         chainId: BigInt(chainId),
         verifyingContract: dataContract.address,
       },
