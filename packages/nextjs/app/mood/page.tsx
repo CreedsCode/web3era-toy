@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { NextPage } from "next";
 import { encodeFunctionData } from "viem";
 import { PrivateKeyAccount, privateKeyToAccount } from "viem/accounts";
+import { useWaitForTransactionReceipt } from "wagmi";
 import { useDeployedContractInfo, useScaffoldReadContract, useTargetNetwork } from "~~/hooks/scaffold-eth";
 
 const Mood: NextPage = () => {
@@ -12,13 +13,24 @@ const Mood: NextPage = () => {
   const [wallet, setWallet] = useState<PrivateKeyAccount | null>(null);
   const [selectedMood, setSelectedMood] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { data: deployedContractData } = useDeployedContractInfo("DataContract");
+  const [whitelistingTxHash, setWhitelistingTxHash] = useState<string | null>(null);
 
   const moods = [
     { name: "Bored", emoji: "😑" },
     { name: "Good", emoji: "😊" },
     { name: "Hyped", emoji: "🎉" },
   ];
+
+  const {
+    data: txReceipt,
+    error: txError,
+    isSuccess,
+  } = useWaitForTransactionReceipt({
+    confirmations: 1,
+    hash: whitelistingTxHash as `0x${string}`,
+  });
+
+  const { data: deployedContractData } = useDeployedContractInfo("DataContract");
 
   const { data: nonce } = useScaffoldReadContract({
     contractName: "DataContract",
@@ -31,6 +43,11 @@ const Mood: NextPage = () => {
     const storedWallet = localStorage.getItem("privateKey");
     if (storedWallet) {
       setWallet(privateKeyToAccount(storedWallet));
+    }
+
+    const storedTxHash = localStorage.getItem("whitelistingTxHash");
+    if (storedTxHash) {
+      setWhitelistingTxHash(storedTxHash);
     }
   }, []);
 
@@ -49,22 +66,18 @@ const Mood: NextPage = () => {
     const dataString = JSON.stringify({ username, mood });
 
     try {
-      // Encode the function call data
-      // const functionSignature = encodeAbiParameters(parseAbiParameters("address,string"), [wallet.address, dataString]);
-      // console.log("======================", wallet.address, dataString, functionSignature);
       const functionSignature = encodeFunctionData({
         abi: deployedContractData?.abi,
         functionName: "storeData",
         args: [wallet.address, dataString],
       });
 
-      console.log("======================", wallet.address, dataString, functionSignature);
       const metaTransaction = {
         nonce: BigInt(nonce?.toString() || "0"),
         from: wallet.address,
         functionSignature: functionSignature,
       };
-      // Sign the meta-transaction
+
       const signature = await wallet.signTypedData({
         domain: {
           name: "DataContract",
@@ -89,7 +102,6 @@ const Mood: NextPage = () => {
         message: metaTransaction,
       });
 
-      // Send the signed meta-transaction to your backend
       const response = await fetch("/api/mood", {
         method: "POST",
         headers: {
@@ -123,39 +135,67 @@ const Mood: NextPage = () => {
       <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
         <h1 className="text-4xl font-bold text-center mb-6 text-purple-600">How are you feeling?</h1>
         <p className="text-center mb-8 text-gray-700">Select your mood and we&apos;ll store it on-chain!</p>
-
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          {moods.map(mood => (
-            <button
-              key={mood.name}
-              onClick={() => handleMoodSelect(mood.name)}
-              className={`p-4 rounded-lg text-center transition duration-300 ease-in-out transform hover:scale-105 ${
-                selectedMood === mood.name ? "bg-purple-600 text-white" : "bg-gray-100 hover:bg-gray-200"
-              }`}
-              disabled={isSubmitting}
-            >
-              <span className="text-4xl mb-2 block">{mood.emoji}</span>
-              <span className="font-medium">{mood.name}</span>
-            </button>
-          ))}
-        </div>
-
-        {isSubmitting ? (
+        {/* {JSON.stringify(txReceipt, (_, v) => (typeof v === "bigint" ? v.toString() : v))} */}
+        {!isSuccess ? (
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-            <p className="text-purple-600 font-medium">Storing your mood on-chain...</p>
+            <p className="text-purple-600 font-medium">Waiting for whitelisting...</p>
+            <p className="text-gray-500">
+              <a
+                href={`https://sepolia.etherscan.io/tx/${whitelistingTxHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-600 hover:underline"
+              >
+                Inspect the transaction happening on Chain!
+              </a>
+            </p>
+          </div>
+        ) : txReceipt ? (
+          <>
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              {moods.map(mood => (
+                <button
+                  key={mood.name}
+                  onClick={() => handleMoodSelect(mood.name)}
+                  className={`p-4 rounded-lg text-center transition duration-300 ease-in-out transform hover:scale-105 ${
+                    selectedMood === mood.name ? "bg-purple-600 text-white" : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  <span className="text-4xl mb-2 block">{mood.emoji}</span>
+                  <span className="font-medium">{mood.name}</span>
+                </button>
+              ))}
+            </div>
+
+            {isSubmitting ? (
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                <p className="text-purple-600 font-medium">Storing your mood on-chain...</p>
+              </div>
+            ) : (
+              selectedMood && (
+                <Link href="/data" passHref>
+                  <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105">
+                    See All Moods
+                  </button>
+                </Link>
+              )
+            )}
+          </>
+        ) : txError ? (
+          <div className="text-center">
+            <p className="text-red-600 font-medium">Error occurred during whitelisting.</p>
           </div>
         ) : (
-          selectedMood && (
-            <Link href="/data" passHref>
-              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105">
-                See All Moods
-              </button>
-            </Link>
-          )
+          <div className="text-center">
+            <p className="text-gray-600 font-medium">Please wait for whitelisting to complete.</p>
+          </div>
         )}
       </div>
     </div>
   );
 };
+
 export default Mood;

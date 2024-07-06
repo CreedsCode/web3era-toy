@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { NextPage } from "next";
 import { useTheme } from "next-themes";
 import { PrivateKeyAccount, generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 
 const Login: NextPage = () => {
+  const router = useRouter();
   const { setTheme } = useTheme();
 
   const [username, setUsername] = useState("");
@@ -44,7 +45,10 @@ const Login: NextPage = () => {
         });
 
         if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("whitelistingTxHash", data.transactionHash);
           console.log("Public key sent for whitelisting");
+          router.push("/mood");
         } else {
           console.error("Failed to send public key for whitelisting");
         }
@@ -78,14 +82,12 @@ const Login: NextPage = () => {
           </div>
 
           {isReady ? (
-            <Link href="/mood" passHref>
-              <button
-                onClick={handleLogin}
-                className="mt-6 float w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-              >
-                Start the Adventure!
-              </button>
-            </Link>
+            <button
+              onClick={handleLogin}
+              className="mt-6 float w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              Start the Adventure!
+            </button>
           ) : (
             <button
               disabled

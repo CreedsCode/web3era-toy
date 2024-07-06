@@ -19,14 +19,15 @@ export async function POST(request: Request) {
     const dataContract = dataContracts[targetNetwork.id];
 
     // Call the updateWhitelist function on the DataContract
-    await adminClient.writeContract({
+    const tx = await adminClient.writeContract({
       address: dataContract.address,
       abi: dataContract.abi,
       functionName: "updateWhitelist",
       args: [publicKey, true],
     });
+    console.log("whitelist tx, ", tx);
 
-    return NextResponse.json({ message: "Public key whitelisted successfully" }, { status: 200 });
+    return NextResponse.json({ message: "Public key whitelisted successfully", transactionHash: tx }, { status: 200 });
   } catch (error) {
     console.error("Error whitelisting public key:", error);
     return NextResponse.json({ message: "Error whitelisting public key" }, { status: 500 });
