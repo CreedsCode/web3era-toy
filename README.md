@@ -1,80 +1,56 @@
-# 🏗 Scaffold-ETH 2
-
+# This is build on 🏗 Scaffold-ETH 2
+⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+> 🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+Check it out if you want to learn how to get this project running localy!
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Documentation</a> |
   <a href="https://scaffoldeth.io">Website</a>
 </h4>
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+# Web3Era TOY: A Beginner's Guide to Meta-Transactions
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+Hey there, friend! Let me give you a quick rundown of the technical magic happening behind the scenes in Web3Era TOY. Don't worry; I'll keep it simple and easy to understand.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+## Meta-Transactions: The Secret Sauce
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+At the heart of Web3Era TOY lies the concept of meta-transactions. It's like having a super-powered friend who takes care of all the complicated blockchain stuff for you.
 
-## Requirements
+When you select a mood in the app, it's like sending a secret message to your friend (the relayer service). This message contains your mood data and a special signature that proves it's really you.
 
-Before you begin, you need to install the following tools:
+Your friend (the relayer) then takes this message and pays the gas fees to execute the transaction on the Ethereum blockchain. It's like they're saying, "I got you, buddy! I'll handle the technical mumbo-jumbo, and you just focus on sharing your mood with the world."
 
-- [Node (>= v18.17)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+## Account Abstraction: Your Secret Identity
 
-## Quickstart
+In Web3Era TOY, we use something called account abstraction. It's like having a secret identity that's separate from your wallet.
 
-To get started with Scaffold-ETH 2, follow the steps below:
+When you log in to the app, we generate a unique private key for you and store it safely in your browser's local storage. This private key becomes your secret identity, and it's used to sign transactions on your behalf.
 
-1. Install dependencies if it was skipped in CLI:
+It's like having a superhero alter ego that takes care of all the blockchain interactions while keeping your real identity hidden. Pretty cool, right?
 
-```
-cd my-dapp-example
-yarn install
-```
+## Whitelisting: The Bouncer at the Door
 
-2. Run a local network in the first terminal:
+To make sure only authorized users can join the mood-sharing party, we have a whitelisting process in place. It's like having a friendly bouncer at the door who checks your name on the guest list.
 
-```
-yarn chain
-```
+When you choose a username, your public key is sent to the backend for whitelisting. The app waits for the whitelisting transaction to be confirmed on the blockchain before giving you the green light to store your mood.
 
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
+It's like the bouncer saying, "Alright, you're on the list. Come on in and share your mood with the crew!"
 
-3. On a second terminal, deploy the test contract:
+## Smart Contract: The Mood Vault
 
-```
-yarn deploy
-```
+Under the hood, Web3Era TOY interacts with a smart contract deployed on the Ethereum blockchain. This smart contract is like a super-secure vault that stores and manages everyone's moods.
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
+When you confirm your mood selection, the app prepares a special message (the meta-transaction) with your mood data and signature. This message is sent to your friend (the relayer service), who verifies your signature and executes the `storeData` function on the smart contract.
 
-4. On a third terminal, start your NextJS app:
+The smart contract acts as the gatekeeper, making sure only authorized users can store their moods. Once your mood is stored on-chain, it's like it's forever engraved in the blockchain's digital history.
 
-```
-yarn start
-```
+## Putting It All Together
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+So, there you have it, my friend! That's the technical magic happening behind the scenes in Web3Era TOY. Meta-transactions, account abstraction, whitelisting, and smart contracts all work together to create a seamless and user-friendly experience.
 
-Run smart contract test with `yarn hardhat:test`
+We've got some exciting plans for the future, like preemptive caching to make things even faster and integration with other cool web3 protocols. But for now, sit back, relax, and enjoy sharing your moods with the world!
 
-- Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/hardhat/deploy`
+If you want to dive deeper into the technical details or contribute to the project, just check out the repository. We've got you covered with all the documentation and setup guides you need.
 
+Stay up to date by following me on Twitter.
 
-## Documentation
-
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+https://x.com/spanish_vanish
