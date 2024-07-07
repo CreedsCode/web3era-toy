@@ -29,7 +29,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ isOpen, onClose }) 
               Twitter
             </a>
           </a>
-          .
+          . Check out the Website to learn more about web3era{" "}
+          <a href="https://web3era.dev">
+            <a className="text-purple-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              Web3Era.dev
+            </a>
+          </a>
         </p>
         <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700" onClick={onClose}>
           Close
