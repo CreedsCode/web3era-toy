@@ -6,6 +6,7 @@ import type { NextPage } from "next";
 import { encodeFunctionData } from "viem";
 import { PrivateKeyAccount, privateKeyToAccount } from "viem/accounts";
 import { useWaitForTransactionReceipt } from "wagmi";
+import TransactionProgressModal from "~~/components/TransactionProgressModal";
 import { useDeployedContractInfo, useScaffoldReadContract, useTargetNetwork } from "~~/hooks/scaffold-eth";
 
 const Mood: NextPage = () => {
@@ -14,6 +15,8 @@ const Mood: NextPage = () => {
   const [selectedMood, setSelectedMood] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [whitelistingTxHash, setWhitelistingTxHash] = useState<string | null>(null);
+  const [showProgressModal, setShowProgressModal] = useState(false);
+  const [transactionStatus, setTransactionStatus] = useState("");
 
   const moods = [
     { name: "Bored", emoji: "😑" },
@@ -102,6 +105,9 @@ const Mood: NextPage = () => {
         message: metaTransaction,
       });
 
+      setShowProgressModal(true);
+      setTransactionStatus("Submitting mood to the blockchain...");
+
       const response = await fetch("/api/mood", {
         method: "POST",
         headers: {
@@ -119,8 +125,21 @@ const Mood: NextPage = () => {
 
       if (response.ok) {
         console.log("Mood submitted successfully");
+
+        // Simulate block inclusion delay
+        await new Promise(resolve => setTimeout(resolve, 4000));
+
+        setTransactionStatus("Mood submitted successfully. Waiting for block inclusion...");
+
+        // Simulate block inclusion delay
+        await new Promise(resolve => setTimeout(resolve, 4000));
+
+        setTransactionStatus("Mood included in block. Processing complete!");
+
+        setShowProgressModal(false);
       } else {
         console.error("Error submitting mood");
+        setTransactionStatus("Error submitting mood");
       }
 
       setIsSubmitting(false);
@@ -193,6 +212,11 @@ const Mood: NextPage = () => {
             <p className="text-gray-600 font-medium">Please wait for whitelisting to complete.</p>
           </div>
         )}
+        <TransactionProgressModal
+          isOpen={showProgressModal}
+          transactionStatus={transactionStatus}
+          onClose={() => setShowProgressModal(false)}
+        />
       </div>
     </div>
   );
